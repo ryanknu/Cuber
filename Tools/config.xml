@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<configuration>
+  <default>
+    <database>
+      <adapter>pdo_mysql</adapter>
+      <params>
+        <host>localhost</host>
+        <port>3306</port>
+        <username>root</username>
+        <password>root</password>
+        <dbname>Cuber</dbname>
+      </params>
+    </database>
+  </default>
+</configuration>
