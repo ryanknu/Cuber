@@ -95,11 +95,21 @@ class Cost
 	
 	public function PrettyCost()
 	{
+		static $order = array(
+			"XX", "PW", "PU", "PB", "PR", "PG", "UW", "BW",
+			"2W", "WW", "UB", "RU", "2U", "UU", "RB", "GB",
+			"2B", "BB", "RG", "RW", "2R", "RR", "GW", "GU", 
+			"2G", "GG"
+		);
+			
 		static $pngs = array("phy_red","phy_white","phy_blue","phy_green","phy_black");
 		$r = "(" . $this->data["colorless"] . ")";
-		foreach ($this->data as $key => $val)
+		
+		foreach ($order as $col)
 		{
-			if ( in_array($key, Cost::$FIELDS) )
+			$key = Cost::$FIELDS[$col];
+			$val = $this->data[$key];
+			if ( $val )
 			{
 				for ( $i = 0; $i < $val; $i++ )
 				{
