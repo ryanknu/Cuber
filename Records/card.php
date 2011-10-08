@@ -2,7 +2,7 @@
 
 class Card
 {
-	protected static $TABLE = "cards";
+	public static $TABLE = "cards";
 	
 	protected $data;
 	protected $id;

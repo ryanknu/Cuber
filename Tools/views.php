@@ -36,9 +36,15 @@ class View
 		$this->title = $title;
 	}
 	
+	// **
+	// * IncFile
+	// * Includes a view for viewing. $parse can be either a Record
+	// * object or an array, either is acceptable.
 	public function IncFile($folder, $file, $parse=array())
 	{
-		$view  = new Record($parse);
+		$view = is_array($parse)?
+			new Record($parse) : $parse;
+			
 		$local = $this->local;
 		$title = $this->title;
 		

@@ -9,6 +9,13 @@ class Log
 		DB::zdb()->insert("activity",
 			array("action" => $action, "user" => $user, "date" => date("Y-m-d H:i:s")));
 	}
+	
+	public static function Failure($failure)
+	{
+		DB::zdb()->insert("failures",
+			array("text" => $failure)
+		);
+	}
 }
 
 ?>

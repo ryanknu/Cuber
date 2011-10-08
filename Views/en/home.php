@@ -1,4 +1,5 @@
 <div id="content">
+  <?php View::Obj()->Component("cubes"); ?>
   <?php View::Obj()->Component("whoami"); ?>
   <?php View::Obj()->Component("set"); ?>
   <?php View::Obj()->Component("card"); ?>
