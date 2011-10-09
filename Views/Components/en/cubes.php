@@ -13,7 +13,7 @@
 			url: "request.php?a=cube_list",
 			success: function(data, textStatus, jqXHR)
 			{
-				$("#cubes_top")[0].innerHTML = ( data );
+				$("#cubes_list")[0].innerHTML = ( data );
 			}
 		});
 	}
@@ -31,10 +31,17 @@
 				}
 			});
 		}
+		else
+		{
+			width = window.innerWidth;
+			$("#cubes_top").animate({"left": "-=" + width + "px"}, "fast");
+		}
 	}
 </script>
 
-<section id="cubes_top">
-  <p id="cube_list" style="text-align: center"><?php echo $out; ?></p>
+<section id="cubes_top" style="position:relative;">
+  <div id="cubes_anim" style="position:absolute;">
+    <p id="cube_list" style="text-align: center"><?php echo $out; ?></p>
+  </div>
 </section>
 

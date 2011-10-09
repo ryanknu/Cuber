@@ -56,9 +56,7 @@ section {
 .se_up { display:inline; }
 
 #content {
-	display: table-cell;
-	width: 700px;
-	padding-right: 4px;
+	display: block;
 }
 
 #sidebar {

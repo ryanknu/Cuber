@@ -26,6 +26,7 @@ class Cube
 				)
 			);
 			// Insert CDP for free.
+			require_once "Records/entry.php";
 			DB::zdb()->insert(
 				Entry::$TABLE,
 				array(
