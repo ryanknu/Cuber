@@ -61,6 +61,7 @@ class Cube
 	private function GetEntries()
 	{
 		require_once "Records/card.php";
+		require_once "Records/entry.php";
 		$s = DB::zdb()->select()
 			->from(array("e" => Entry::$TABLE))
 			->join(array("c" => Card::$TABLE), "e.card = c.id")
@@ -90,6 +91,7 @@ class Cube
 		{
 			DB::zdb()->beginTransaction();
 			
+			require_once "Records/entry.php";
 			$entry = new Entry($this, $cardId);
 			$entry->Add();
 			
@@ -97,7 +99,7 @@ class Cube
 		}
 		catch (Exception $e)
 		{
-			DB::zdb()->rollBack()
+			DB::zdb()->rollBack();
 			Log::Failure(print_r($e, true));
 		}
 	}
