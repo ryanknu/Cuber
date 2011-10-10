@@ -27,6 +27,7 @@ class Cost
 			->from(Cost::$TABLE)
 			->where("id = ?", $id);
 		$this->data = DB::zdb()->fetchRow($s);
+		$this->id = $this->data["id"];
 	}
 	
 	// string format: ccXXYYZZ...
@@ -121,6 +122,11 @@ class Cost
 			}
 		}
 		return $r;
+	}
+	
+	public function ID()
+	{
+		return $this->id;
 	}
 }
 

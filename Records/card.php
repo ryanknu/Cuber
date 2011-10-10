@@ -1,13 +1,56 @@
 <?php
 
+require_once "Records/cost.php";
+
 class Card
 {
 	public static $TABLE = "cards";
+	public static $TYPES = "card_types";
+	public static $SUBS  = "card_subtypes";
 	
 	protected $data;
 	protected $id;
 	// private fields!
 	private $name;
+	
+	public static function Create($data)
+	{
+		$in = array();
+		$cost = Cost::CostFromString($data["Mana Cost"]);
+		$in["cost"] = $cost->ID();
+		$in["rarity"] = strtoupper($data["Rarity"]);
+		$map = array(
+			"name" => "Card Name",
+			"power" => "P",
+			"toughness" => "T",
+			"text" => "Card Text",
+			"flavor" => "Flavor Text",
+			"loyalty" => "Loyalty",
+			"artist" => "Artist",
+			"multiverse" => "multiverse",
+			"number" => "Card #",
+			"set" => "set"
+		);
+		foreach( $map as $key => $val )
+		{
+			if ( isset( $data[$val] ) )
+				$in[$key] = $data[$val];
+		}
+		DB::zdb()->insert(Card::$TABLE, $in);
+		$id = DB::zdb()->lastInsertId();
+		foreach( $data["Types"] as $type )
+		{
+			DB::zdb()->insert(Card::$TYPES,
+				array("card" => $id, "type" => $type)
+			);
+		}
+		foreach( $data["Subtypes"] as $type )
+		{
+			DB::zdb()->insert(Card::$SUBS,
+				array("card" => $id, "subtype" => $type)
+			);
+		}
+	}
 	
 	public function __construct($card)
 	{

@@ -69,6 +69,40 @@
 			}
 		});
   	}
+  	
+  	var cards;
+  	function pre_import()
+  	{
+  		cards = $("#cards_import")[0].value.split("\n");
+  		$("#import_box")[0].innerHTML = "";
+  		o = "Importing... <br />";
+  		for ( i = 0; i < cards.length; i++ )
+  		{
+  			o += ( "<span id='c_" + i + "'>" + cards[i] + "</span><br />" );
+  		}
+  		$("#import_box")[0].innerHTML = o;
+  		setTimeout("cimport(" + 0 + ");", 100);
+  	}
+  	
+  	function cimport(i)
+  	{
+  		name = $.URLEncode(cards[i]);
+  		$("#c_" + i)[0].style.color = "purple";
+  		$.ajax({
+			url: "request.php?a=gg_card&set=" + aSet + "&card=" + name,
+			success: function(data, textStatus, jqXHR)
+			{
+				nc = "green";
+				if ( data == "dupe" )
+					nc = "orange";
+				if ( data == "fail" )
+					nc = "red";
+				$("#c_" + i)[0].style.color = nc;
+				if ( i < cards.length - 1 )
+					setTimeout("cimport(" + (i+1) + ");", 100);
+			}
+		});
+  	}
 </script>
 
 <div id="sets_top">

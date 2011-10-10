@@ -10,6 +10,15 @@
 // ridiculously arbitrary and hackey. It's almost a miracle it works
 // at all, and I don't really want to maintain it.
 
+function GathererGrab($name)
+{
+	return GathererFineParse(
+		GathererCoarseParse(
+			GathererGrabName($name)
+		)
+	);
+}
+
 function GathererGrabName($name)
 {
 	$name = urlencode($name);
@@ -32,6 +41,7 @@ function GathererGrabName($name)
 function GathererCoarseParse($text)
 {
 	static $flags = array(
+		"Handlers/Image.ashx?",
 		"Card Name", "Mana Cost",
 		"Types", "Card Text", "Flavor Text",
 		"Loyalty", "P/T",
@@ -47,10 +57,12 @@ function GathererCoarseParse($text)
 	{
 		if ( strpos( $text[$i], $flags[$ptr] ) )
 		{
-			if ( $flags[$ptr] <> "Expansion" )
-				$out[$flags[$ptr]] = trim($text[$i+2]);
-			else
+			if ( $flags[$ptr] == "Expansion" )
 				$out[$flags[$ptr]] = trim($text[$i+3]);
+			else if ( $flags[$ptr] == "Handlers/Image.ashx?" )
+				$out["multiverse"] = trim($text[$i]);
+			else
+				$out[$flags[$ptr]] = trim($text[$i+2]);
 			if ( $flags[$ptr] == "Types" )
 			{
 				foreach( $types as $key => $type )
@@ -117,6 +129,11 @@ function GathererFineParse($ca)
 		$t = $e;
 	}
 	$ca["Mana Cost"] = $costs;
+	$ex = $ca["multiverse"];
+	$s = strpos($ex, "eid=") + 4;
+	$e = strpos($ex, "&", $s);
+	$l = $e - $s;
+	$ca["multiverse"] = substr($ex, $s, $l);
 	$ex = $ca["Expansion"];
 	$s = strpos($ex, "alt=") + 5;
 	$e = strpos($ex, "(", $s);
@@ -142,13 +159,5 @@ function GathererFineParse($ca)
 	$ca["Subtypes"] = $subs;
 	return $ca;
 }
-
-print_r(
-	GathererFineParse(
-		GathererCoarseParse(
-			GathererGrabName("Iona, Shield of Emeria")
-		)
-	)
-);
 
 ?>
