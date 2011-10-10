@@ -3,7 +3,6 @@
   <head>
   	<title><?php echo $title?$title:"Cuber by Ryan Knuesel";?></title>
   	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  	<meta name="Language" content="en" />
   	
   	<link rel="stylesheet" type="text/css" href="Views/css/cuber.css" media="screen" />
   	<?php if (!App::Obj()->IsOffline()) { ?>

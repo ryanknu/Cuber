@@ -10,6 +10,7 @@ class Cube
 	private $name;
 	private $count;
 	private $cards;
+	private $image;
 	
 	public static function Create()
 	{
@@ -55,6 +56,7 @@ class Cube
 		$this->id = $cube["id"];
 		$this->revision = $cube["revision"];
 		$this->name = $cube["name"];
+		$this->image = $cube["image"];
 		
 		$this->GetEntries();
 	}
@@ -111,7 +113,10 @@ class Cube
 			array(
 				"name" => $this->name,
 				"count" => $this->count . " Cards",
-				"id" => $this->id
+				"id" => $this->id,
+				"bg_image" =>
+					"background-image:url('image.php?cube="
+					. $this->id . "');"
 			)
 		);
 		View::Obj()->Component(Cube::$CELL_COMPONENT, $r);

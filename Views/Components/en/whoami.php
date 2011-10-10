@@ -10,7 +10,7 @@
 
 <?php else: ?>
 
-<section id="whoami">
+<section id="whoami" style="border-color:red;">
   Welcome to Cuber! You are currently in dev mode!
 </section>
 
