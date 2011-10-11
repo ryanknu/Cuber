@@ -12,9 +12,16 @@ function OddSequence($len)
 
 function UniqFilename()
 {
-	$u = OddSequence();
+	$u = OddSequence(20);
 	// do some kind of check to see if it's already there
 	return $u;
+}
+
+function GetGathererURL($id)
+{
+	return
+		"http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid="
+		. $id . "&type=card";
 }
 
 function GetURLFor($name, $class)
@@ -22,9 +29,9 @@ function GetURLFor($name, $class)
 	return "Generated/Images/" . $class . "/" . $name . ".png";
 }
 
-function GetImages($url)
+function GetImages($id)
 {
-	$r = array();
+	$url = GetGathererURL($id);
 	$W = 180;
 	$H = 130;
 	$im = imagecreatefromjpeg($url);
@@ -35,6 +42,7 @@ function GetImages($url)
 	$name = UniqFilename();
 	$c = "Card";
 	$r[$c] = GetURLFor($name, $c);
+	fclose(fopen($r[$c], "c"));
 	imagepng($dest, $r[$c]);
 	imagedestroy($dest);
 	
@@ -64,6 +72,7 @@ function GetImages($url)
 	}
 	$c = "Stripe";
 	$r[$c] = GetURLFor($name, $c);
+	fclose(fopen($r[$c], "c"));
 	imagepng($dest, $r[$c]);
 	imagedestroy($dest);
 	// Get Cube image
@@ -92,6 +101,7 @@ function GetImages($url)
 	}
 	$c = "Cube";
 	$r[$c] = GetURLFor($name, $c);
+	fclose(fopen($r[$c], "c"));
 	imagepng($dest, $r[$c]);
 	imagedestroy($dest);
 	

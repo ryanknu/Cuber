@@ -11,20 +11,21 @@ class Image
 	private $sourceUrl;
 	private $useSource;
 	
-	public static function Import($url)
+	public static function Import($id, $card)
 	{
+		require_once "Tools/Image/import.php";
 		$s = DB::zdb()->select()
 			->from(Image::$TABLE)
-			->where("source_url = ?", $url);
+			->where("source_url = ?", GetGathererURL($id));
 		$row = DB::zdb()->fetchRow($s);
 		if ( !$row )
 		{
 			DB::zdb()->insert(
-				Image::$TABLE, array("source_url" => $url)
+				Image::$TABLE, array("source_url" => GetGathererURL($id), "card" => $card)
 			);
+			$row = array("id" => $imId = DB::zdb()->lastInsertId());
 		}
-		require_once "Tools/Image/import.php";
-		$r = GetImages($url);
+		$r = GetImages($id);
 		foreach($r as $class => $url)
 		{
 			DB::zdb()->insert(
@@ -33,7 +34,7 @@ class Image
 					"image" => $row['id'],
 					"class" => $class,
 					"local_url" => $url
-				);
+				)
 			);
 		}
 	}

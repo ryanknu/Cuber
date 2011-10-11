@@ -91,7 +91,7 @@
 		}
 		else
 		{
-			jump_left("request.php?a=cube_list");
+			jump_left("request.php?a=cube&cube=" + str_identifier);
 		}
 	}
 </script>
@@ -102,9 +102,9 @@
   </div>
 </section>
 
-<section id="vpBwrapper" style="position:relative;top:-9px;">
+<section id="vpBwrapper" style="position:relative;">
   <div id="viewportB" style="position:absolute;">
-    Please put a cube editor in here.
+    &nbsp;
   </div>
 </section>
 

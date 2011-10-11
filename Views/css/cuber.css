@@ -1,6 +1,29 @@
+body {
+	margin-top: 0px;
+	padding-top: 0px;
+	color: #518;
+}
+
+#top_tab {
+	border: solid 2px #518;
+	border-top: none;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	background-color: #ccc;
+	color: #518;
+	margin-left: 25px;
+	padding: 5px;
+	font-size: 48px;
+	font-family: "Helvetica", sans-serif;
+}
+
+#top {
+	margin-bottom: 25px;
+}
+
 section {
-	border: solid 1px #ccc;
-	border-top: solid 8px #ccc;
+	/*border: solid 1px #ccc;
+	border-top: solid 8px #ccc;*/
 }
 
 .inp_sty {
@@ -73,12 +96,15 @@ a {
 	cursor: pointer;
 }
 
+.gridCell:hover {
+	border-color: black;
+}
 
 .gridCell {
 	display: inline-block;
 	width: 150px;
 	height: 150px;
-	border:1px solid black;
+	border:2px solid #518;
 	margin: 5px;
 	margin-top: 10px;
 	border-radius: 10px;

@@ -92,11 +92,15 @@
 			url: "request.php?a=gg_card&set=" + aSet + "&card=" + name,
 			success: function(data, textStatus, jqXHR)
 			{
-				nc = "green";
+				nc = "orange";
 				if ( data == "dupe" )
 					nc = "orange";
-				if ( data == "fail" )
+				else if ( data == "fail" )
 					nc = "red";
+				else if ( data == "great success" )
+					nc = "green";
+				else
+					alert(data);
 				$("#c_" + i)[0].style.color = nc;
 				if ( i < cards.length - 1 )
 					setTimeout("cimport(" + (i+1) + ");", 100);

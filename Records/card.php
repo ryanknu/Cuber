@@ -50,6 +50,7 @@ class Card
 				array("card" => $id, "subtype" => $type)
 			);
 		}
+		Image::Import($data["multiverse"], $id);
 	}
 	
 	public function __construct($card)

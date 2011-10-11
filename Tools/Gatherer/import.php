@@ -122,6 +122,8 @@ function GathererFineParse($ca)
 		}
 		else
 		{
+			if ( strlen($costs) < 2 )
+				$costs = "00";
 			if ( !in_array($o, array_keys($colors) ))
 				break;
 			$costs .= $colors[$o];
