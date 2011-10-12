@@ -3,7 +3,7 @@
 class Cube
 {
 	public static $TABLE = "cubes";
-	private static $CELL_COMPONENT = "cube_cell";
+	private static $CELL_COMPONENT = "cube/cell";
 	
 	private $id;
 	private $revision;
