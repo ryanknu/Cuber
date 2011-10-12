@@ -52,6 +52,20 @@ class Set
 		unset($this->data['id']);
 	}
 	
+	public function GetCards()
+	{
+		$s = DB::zdb()->select()
+			->from(Card::$TABLE)
+			->where("set = ?", $this->id);
+		$r = DB::zdb()->fetchRow($s);
+		$out = array();
+		foreach ( $r as $row )
+		{
+			$out[] = new Card($row);
+		}
+		return $out;
+	}
+	
 	public static function SetList($includeInactive=false)
 	{
 		$s = DB::zdb()->select()
@@ -74,6 +88,7 @@ class Set
 	}
 	
 	public function String() { return $this->name; }
+	public function Name() { return $this->name; }
 	public function ID() { return $this->id; }
 	public function Image() { return $this->image; }
 	public function Date() { return $this->image; }

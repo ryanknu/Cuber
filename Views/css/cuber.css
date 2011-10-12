@@ -17,6 +17,30 @@ body {
 	font-family: "Helvetica", sans-serif;
 }
 
+.header:hover {
+	border-color: black;
+}
+
+.header {
+	font-size: 20px;
+	text-align: left;
+}
+
+.cube_section {
+	margin-top: 2px;
+	border: solid 2px #518;
+	border-radius: 10px;
+	background-clip: border-box;
+	padding: 4px;
+	text-align: right;
+	background-repeat: no-repeat;
+}
+
+.flow {
+	display: inline-block;
+	width: 200px;
+}
+
 #top {
 	margin-bottom: 25px;
 }

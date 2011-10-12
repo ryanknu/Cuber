@@ -11,6 +11,18 @@ class Image
 	private $sourceUrl;
 	private $useSource;
 	
+	public static function ForCard($card)
+	{
+		$s = DB::zdb()->select()
+			->from(array("c" => Card::$TABLE))
+			->join(array("i" => Image::$TABLE), "c.id = i.card")
+			->where("c.id = ?", $card->ID());
+		$r = DB::zdb()->fetchRow($s);
+		if ( $r )
+			return new Image($r);
+		return false;
+	}
+	
 	public static function Import($id, $card)
 	{
 		require_once "Tools/Image/import.php";
@@ -50,7 +62,6 @@ class Image
 		}
 		$this->id = $image['id'];
 		$this->sourceUrl = $image['source_url'];
-		$this->useSource = $image['use_source'];
 		$this->classes = array();
 		$this->localUrls = array();
 		if ( !$this->useSource )
@@ -62,9 +73,16 @@ class Image
 			foreach($rows as $row)
 			{
 				$this->classes[] = $row['class'];
-				$this->localUrls[] = $row['local_url'];
+				$this->localUrls[$row['class']] = $row['local_url'];
 			}
 		}
+	}
+	
+	public function GetClass($class)
+	{
+		if ( $class == "source" )
+			return $this->sourceUrl;
+		return $this->localUrls[$class];
 	}
 	
 	public function Get($key) { return $this->data[$key]; }

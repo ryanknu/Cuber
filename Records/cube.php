@@ -11,6 +11,7 @@ class Cube
 	private $count;
 	private $cards;
 	private $image;
+	private $data;
 	
 	public static function Create()
 	{
@@ -57,6 +58,7 @@ class Cube
 		$this->revision = $cube["revision"];
 		$this->name = $cube["name"];
 		$this->image = $cube["image"];
+		$this->data = $cube;
 		
 		$this->GetEntries();
 	}
@@ -143,6 +145,13 @@ class Cube
 	{
 		return $this->id;
 	}
+	
+	public function Cards()
+	{
+		return $this->cards;
+	}
+	
+	public function Record() { return new Record($this->data); }
 }
 
 ?>

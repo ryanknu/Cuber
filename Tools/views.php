@@ -1,7 +1,5 @@
 <?php
 
-require_once "Records/record.php";
-
 class View
 {
 	private $title;
@@ -48,10 +46,10 @@ class View
 		$local = $this->local;
 		$title = $this->title;
 		
-		$str = "$folder/$local/$file.php";
-		if ( !file_exists( $str ) )
-			$str = "$folder/en/$file.php";
-		include $str;
+		//echo "parsing view: $folder/$file<br />";
+		
+		$file = FindFile("$folder/$file.php");
+		include FindFile($file);
 	}
 
 	public function MainView($view, $parse=array())
@@ -72,16 +70,6 @@ class View
 	
 	public function Component($view, $parse=array())
 	{
-		if ( $this->model == NULL )
-		{
-			if ( file_exists( "Records/$view.php" ) )
-				include_once "Records/$view.php";
-		}
-		else
-		{
-			include_once "Records/{$this->model}.php";
-			$this->model = NULL;
-		}
 		$this->IncFile("Views/Components", $view, $parse);
 	}
 	

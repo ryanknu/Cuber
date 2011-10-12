@@ -1,27 +1,49 @@
 <?php
 
-function __autoload($class_name) {
+function FindFile($fn)
+{
+	static $quiet = true;
+	if ( !$quiet ) echo "<br />Looking for: $fn.";
+	if ( !file_exists( $fn ) )
+	{
+		$ip = explode(":", ini_get("include_path"));
+		foreach ( $ip as $p )
+		{
+			if ( !$quiet ) echo "Looking at $p/$fn.";
+			if ( file_exists( "$p/$fn" ) )
+			{
+				return "$p/$fn";
+			}
+		}
+		if ( !$quiet ) echo "Could not find. Dying.";
+		return false;
+	}
+	return $fn;
+}
+
+function __CuberAutoloader($class_name) {
 	if ( $class_name == "DB" )
 		include "Tools/database.php";
 	else
 	{
 		$class_name = strtolower($class_name);
-		@include "Records/$class_name.php";
+		$file = FindFile($class_name . ".php");
+		if ( $file )
+		{
+			include $file;
+		}
 	}
 }
 
-if (isset( $PathToRoot ) )
-{
-	$ic = ini_get("include_path");
-	$ic = "$PathToRoot:" . $ic;
-	set_include_path($ic);
-}
+spl_autoload_register("__CuberAutoLoader");
 
-//require_once "Tools/database.php";
-require_once "Records/auth.php";
-require_once "Records/user.php";
-require_once "Records/app.php";
-require_once "Tools/logs.php";
-require_once "Tools/views.php";
+if (!isset($PathToRoot) )
+	$PathToRoot = ".";
+$ic = ini_get("include_path");
+$ic = "$PathToRoot/Records:$PathToRoot:" . $ic;
+set_include_path($ic);
+
+require_once $PathToRoot . "/Tools/logs.php";
+require_once $PathToRoot . "/Tools/views.php";
 
 ?>

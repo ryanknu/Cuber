@@ -12,6 +12,7 @@ class Card
 	protected $id;
 	// private fields!
 	private $name;
+	private $image;
 	
 	public static function Create($data)
 	{
@@ -98,8 +99,18 @@ class Card
 		return new MutableCard($this->id);
 	}
 	
+	public function Image()
+	{
+		if ( !$this->image )
+		{
+			$this->image = Image::ForCard($this);
+		}
+		return $this->image;
+	}
+	
 	public function Name() { return $this->name; }
 	public function ID() { return $this->id; }
+	public function Record() { return new Record($this->data); }
 }
 
 ?>
