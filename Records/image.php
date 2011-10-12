@@ -19,7 +19,9 @@ class Image
 			->where("c.id = ?", $card->ID());
 		$r = DB::zdb()->fetchRow($s);
 		if ( $r )
+		{
 			return new Image($r);
+		}
 		return false;
 	}
 	

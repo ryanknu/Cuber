@@ -16,7 +16,7 @@ $c = new Cube($_GET["cube"]);
 
 <?php View::Obj()->Component("cube/title", $c); ?>
 
-<div id="cube_main_left" style="display:inline-block;width:97%;border:1px dotted black;overflow-y:scroll;overflow-x:visible;">
+<div id="cube_main_left" style="display:inline-block;width:97%;border:none;overflow-y:scroll;overflow-x:visible;">
   <?php
     foreach( $c->Cards() as $card )
     {
@@ -24,6 +24,6 @@ $c = new Cube($_GET["cube"]);
     }
   ?>
 </div>
-<div id="cube_main_right" style="display:none;border:1px solid black;vertical-align:top;margin-left:10px;">
+<div id="cube_main_right" style="display:none;border:none;vertical-align:top;margin-left:10px;">
   Put yo cube editor here. <?php // I did it for the lulz ?>
 </div>

@@ -4,7 +4,7 @@ class Cost
 {
 	protected $id;
 	protected $data;
-	private static $TABLE = "costs";
+	public static $TABLE = "costs";
 	private static $FIELDS = array(
 			"RR" => "red",			"PR" => "phy_red",
 			"GG" => "green",		"PG" => "phy_green",
@@ -36,6 +36,22 @@ class Cost
 	{
 		$match = array();
 		$cond = "(1=1) ";
+		static $colorMixer = array(
+			"RR" => "red",			"PR" => "red",
+			"GG" => "green",		"PG" => "green",
+			"UU" => "blue",			"PU" => "blue",
+			"WW" => "white",		"PW" => "white",
+			"BB" => "black", 		"PB" => "black",
+			"RG" => "hybrid",		"RU" => "hybrid",
+			"RW" => "hybrid",		"RB" => "hybrid",
+			"GU" => "hybrid",		"GW" => "hybrid",
+			"GB" => "hybrid",		"UW" => "hybrid",
+			"UB" => "hybrid",		
+			"BW" => "hybrid",  		"2R" => "red",
+			"2G" => "green",		"2B" => "black",
+			"2U" => "blue",			"2W" => "white"
+		);
+		$uniqSymbols = array();
 		
 		if ( $str == "NONE" || strlen($str) < 2 )
 		{
@@ -49,8 +65,15 @@ class Cost
 			for ( $i = 2; $i < strlen($str); $i += 2 )
 			{
 				$buf = $str{$i} . $str{$i+1};
+				if ( array_key_exists( $buf, $colorMixer )
+					&& !in_array($buf, $uniqSymbols) )
+				{
+					$uniqSymbols[] = $buf;
+				}
 				if ( $buf <> "XX" )
 					++$match["cmc"];
+				else if ( $buf{0} == '2' )
+					$match["cmc"] += 2;
 				if ( array_key_exists( $buf, $match ) )
 				{
 					++$match[$buf];
@@ -60,24 +83,50 @@ class Cost
 					$match[$buf] = 1;
 				}
 			}
+			$match["color"] = "colorless";
+			foreach ( $uniqSymbols as $symb )
+			{
+				if ( $match["color"] == "colorless"
+					|| $match["color"] == $colorMixer[$symb] )
+				{
+					$match["color"] = $colorMixer[$symb];
+				}
+				else
+				{
+					$match["color"] = "gold";
+				}
+			}
+			if ( $match["color"] == "hybrid" && count($uniqSymbols) > 1 )
+				$match["color"] = "gold";
+			$s = DB::zdb()->select()
+				->from(Card::$COLORS, array("id"))
+				->where("color = ?", $match["color"]);
+			$match["color"] = DB::zdb()->fetchOne($s);
 		}
 		if ( !isset( $match["no_cost"] ) )
+		{
 			$cond .= " AND no_cost IS NULL ";
+		}
 		foreach ( Cost::$FIELDS as $key => $val )
+		{
 			if ( !isset( $match[$key] ) )
+			{
 				$cond .= " AND $val IS NULL ";
+			}
 			else
 			{
 				$cond .= ( " AND $val = " . $match[$key] . " ");
 				$match[$val] = $match[$key];
 				unset($match[$key]);
 			}
+		}
 		
 		// Search the DB for it
 		$s = DB::zdb()->select()
 			->from(Cost::$TABLE, array("id"))
 			->where( $cond );
 		$id = DB::zdb()->fetchOne($s);
+		
 		if ( $id )
 		{
 			return new Cost($id);

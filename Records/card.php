@@ -4,15 +4,17 @@ require_once "Records/cost.php";
 
 class Card
 {
-	public static $TABLE = "cards";
-	public static $TYPES = "card_types";
-	public static $SUBS  = "card_subtypes";
+	public static $TABLE  = "cards";
+	public static $TYPES  = "card_types";
+	public static $SUBS   = "card_subtypes";
+	public static $COLORS = "colors";
 	
 	protected $data;
 	protected $id;
 	// private fields!
 	private $name;
 	private $image;
+	private $cardFrame;
 	
 	public static function Create($data)
 	{
@@ -56,27 +58,24 @@ class Card
 	
 	public function __construct($card)
 	{
-		if ( is_array($card) )
-		{
-			// more fields!
-			$this->data = $card;
-			$this->id = $card["id"];
-			$this->name = $card["name"];
-			
-			unset($this->data["id"]);
-		}
-		else
+		if ( !is_array($card) )
 		{
 			$s = DB::zdb()->select()
-				->from(Card::$TABLE)
+				->from(array("ca" => Card::$TABLE))
+				->join(array("mc" => Cost::$TABLE), "ca.cost = mc.id")
+				->join(array("co" => Card::$COLORS), "mc.color = co.id")
 				->where("id = ?", $card);
-			$row = DB::zdb()->fetchRow($s);
-			$this->data = $row;
-			$this->id = $row["id"];
-			$this->name = $row["name"];
-			
-			unset($this->data["id"]);
+			$card = DB::zdb()->fetchRow($s);
 		}
+		
+		$this->data = $card;
+		
+		$this->id = $card["card"]; // Need to use the "card" column here because
+		                           // of the join "id" isn't reliable
+		$this->name = $card["name"];
+		$this->cardFrame = $card["frame_url"];
+		
+		unset($this->data["id"]);
 	}
 	
 	public static function CardList($set)

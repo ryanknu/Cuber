@@ -3,6 +3,6 @@
 $PathToRoot = "../..";
 require "../../Tools/cuber.php";
 
-View::Obj()->Component("cube");
+View::Obj()->Component("cube/edit");
 
 ?>

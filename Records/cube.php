@@ -45,6 +45,17 @@ class Cube
 		}
 	}
 	
+	// Here's a fantastic example of why you should always use the
+	// getter and setter methods... no matter where you are. Deferred
+	// loading.
+	public function Cards()
+	{
+		if ( ! $this->cards )
+			$this->GetEntries();
+			
+		return $this->cards;
+	}
+	
 	public function __construct($cube)
 	{
 		if ( !is_array($cube) )
@@ -60,7 +71,9 @@ class Cube
 		$this->image = $cube["image"];
 		$this->data = $cube;
 		
-		$this->GetEntries();
+		$this->count = DB::zdb()->fetchOne(
+			"SELECT COUNT(*) FROM entries WHERE cube='" . $this->id . "'"
+		);
 	}
 	
 	private function GetEntries()
@@ -69,13 +82,14 @@ class Cube
 		require_once "Records/entry.php";
 		$s = DB::zdb()->select()
 			->from(array("e" => Entry::$TABLE))
-			->join(array("c" => Card::$TABLE), "e.card = c.id")
+			->join(array("ca" => Card::$TABLE), "e.card = ca.id")
+			->join(array("mc" => Cost::$TABLE), "ca.cost = mc.id")
+			->join(array("co" => Card::$COLORS), "mc.color = co.id")
 			->where("e.cube = ?", $this->id);
 		$r = DB::zdb()->fetchAll($s);
 		$this->cards = array();
 		foreach ( $r as $rr )
 			$this->cards[] = new Card($rr);
-		$this->count = count($this->cards);
 	}
 	
 	public function CubesForUser($user)
@@ -144,11 +158,6 @@ class Cube
 	public function ID()
 	{
 		return $this->id;
-	}
-	
-	public function Cards()
-	{
-		return $this->cards;
 	}
 	
 	public function Record() { return new Record($this->data); }
