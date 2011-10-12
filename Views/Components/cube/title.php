@@ -1,5 +1,15 @@
 <?php
-	$title = $view->Name();
+
+// **
+// * Cube Title
+// * Component
+// * Displays the title bar of the cube.
+// *
+// * Author: Ryan Knuesel
+// **
+
+$title = $view->Name();
+
 ?>
 
 <div id="cube_title" class="cube_section header" style="width:97%">
