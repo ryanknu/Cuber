@@ -21,7 +21,7 @@ class App
 		);
 	}
 	
-	public function Obj()
+	public static function Obj()
 	{
 		static $app;
 		if ( !$app )
@@ -29,6 +29,11 @@ class App
 			$app = new App();
 		}
 		return $app;
+	}
+	
+	public function IsDev()
+	{
+		return !$this->useFB;
 	}
 	
 	public function FacebookUser()

@@ -56,14 +56,24 @@ class Set
 	{
 		$s = DB::zdb()->select()
 			->from(Card::$TABLE)
-			->where("set = ?", $this->id);
-		$r = DB::zdb()->fetchRow($s);
+			->where("`set` = ?", $this->id);
+		$r = DB::zdb()->fetchAll($s);
 		$out = array();
 		foreach ( $r as $row )
 		{
-			$out[] = new Card($row);
+			$out[] = new Card($row["id"]);
 		}
 		return $out;
+	}
+	
+	// **
+	// * Cards
+	// * Method
+	// * Aliast to match naming convention
+	// **
+	public function Cards()
+	{
+		return $this->GetCards();
 	}
 	
 	public static function SetList($includeInactive=false)

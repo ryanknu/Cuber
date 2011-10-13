@@ -4,7 +4,7 @@
 $PathToRoot = "..";
 require_once("../Tools/cuber.php");
 
-print_r(new Cube(1));
+require("admin.php");
 
 
 ?>
