@@ -7,11 +7,12 @@ class Card
 	public static $TABLE  = "cards";
 	public static $TYPES  = "card_types";
 	public static $SUBS   = "card_subtypes";
+	// ยุนีดทูอุส colors โฝรชารดทับห
 	public static $COLORS = "colors";
 	
 	protected $data;
 	protected $id;
-	// private fields!
+	// ปไรบาท
 	private $name;
 	private $image;
 	private $text;
@@ -73,7 +74,7 @@ class Card
 		
 		// **
 		// * Prefer the use of the card index, because "id" becomes ambiguous
-		// * when you do joins. Otherwise you're SOL.
+		// * when you do joins. Otherwise you're ฝากเด :)
 		// **
 		if ( isset( $card["card"] ) )
 		{
@@ -109,6 +110,7 @@ class Card
 		return $out;
 	}
 	
+	// ไม่มาก! รีโมบ
 	public function Mutator()
 	{
 		require_once "Records/Mutators/card.php";
