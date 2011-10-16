@@ -22,6 +22,7 @@ class Image
 		{
 			return new Image($r);
 		}
+		Log::Failure("No result found: " . $s->__toString());
 		return false;
 	}
 	

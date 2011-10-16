@@ -80,11 +80,8 @@ class Cube
 	{
 		require_once "Records/card.php";
 		require_once "Records/entry.php";
-		$s = DB::zdb()->select()
-			->from(array("e" => Entry::$TABLE))
-			->join(array("ca" => Card::$TABLE), "e.card = ca.id")
-			->join(array("mc" => Cost::$TABLE), "ca.cost = mc.id")
-			->join(array("co" => Card::$COLORS), "mc.color = co.id")
+		$s = Card::GetAllCardsQuery()
+			->join(array("e" => Entry::$TABLE), "e.card = ca.id", array())
 			->where("e.cube = ?", $this->id);
 		$r = DB::zdb()->fetchAll($s);
 		$this->cards = array();

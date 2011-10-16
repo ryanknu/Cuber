@@ -189,6 +189,15 @@ function set_grid_click(identifier)
 	});
 }
 
+function card_hover(id, enter)
+{
+	log(id);
+	disp = "none";
+	if ( enter )
+		disp = "block";
+	$(id)[0].style.display = disp;
+}
+
 function edit_cube()
 {
 	$("#cube_main_left").animate({"width": "262px"}, 500);

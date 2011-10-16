@@ -53,6 +53,10 @@ body {
 	text-align: center;
 }
 
+#cube_main_right {
+	overflow:scroll;
+}
+
 .cardText {
 	color: black;
 	font-size: 7pt;

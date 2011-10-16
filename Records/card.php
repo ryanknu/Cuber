@@ -58,32 +58,29 @@ class Card
 		Image::Import($data["multiverse"], $id);
 	}
 	
+	public static function GetAllCardsQuery()
+	{
+		static $cols = array(
+			"ca.id", "ca.name", "ca.text", "co.frame_url"
+		);
+		return DB::zdb()->select()
+			->from(array("ca" => Card::$TABLE), $cols)
+			->join(array("mc" => Cost::$TABLE), "ca.cost = mc.id", array())
+			->join(array("co" => Card::$COLORS), "mc.color = co.id", array());
+	}
+	
 	public function __construct($card)
 	{
 		if ( !is_array($card) )
 		{
-			$s = DB::zdb()->select()
-				->from(array("ca" => Card::$TABLE))
-				->join(array("mc" => Cost::$TABLE), "ca.cost = mc.id")
-				->join(array("co" => Card::$COLORS), "mc.color = co.id")
+			$s = Card::GetAllCardsQuery()
 				->where("ca.id = ?", $card);
 			$card = DB::zdb()->fetchRow($s);
 		}
 		
 		$this->data = $card;
-		
-		// **
-		// * Prefer the use of the card index, because "id" becomes ambiguous
-		// * when you do joins. Otherwise you're ฝากเด :)
-		// **
-		if ( isset( $card["card"] ) )
-		{
-			$this->id = $card["card"];
-		}
-		else
-		{
-			$this->id = $card["id"];
-		}
+
+		$this->id = $card["id"];
 		$this->name = $card["name"];
 		$this->cardFrame = $card["frame_url"];
 		$this->text = $card["text"];
