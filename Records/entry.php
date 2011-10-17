@@ -9,20 +9,21 @@ class Entry
 	private $id;
 	private $cube;
 	private $card;
-	private $active;
+	private $count;
 	
 	public function __construct($cube, $cardId)
 	{
 		$s = DB::zdb()->select()
-				->from(Entry::$TABLE, array("id", "active"))
-				->where("cube = ?", $cube->id)
+				->from(Entry::$TABLE, array("id", "count"))
+				->where("cube = ?", $cube->ID())
 				->where("card = ?", $cardId);
-		list($id, $active) = DB::zdb()->fetchRow($s);
+		$r = DB::zdb()->fetchRow($s);
+		list($id, $count) = array($r["id"], $r["count"]);
 		if ( $id )
 		{
 			$this->cube = $cube;
-			$this->card = $cardId;
-			$this->active = $active;
+			$this->card = new Card($cardId);
+			$this->count = $count;
 			$this->id = $id;
 		}
 		else
@@ -30,14 +31,13 @@ class Entry
 			DB::zdb()->insert(
 				Entry::$TABLE,
 				array(
-					"cube" => $this->id,
-					"card" => $cardId,
-					"active" => 0
+					"cube" => $cube->ID(),
+					"card" => $cardId
 				)
 			);
 			$this->cube = $cube;
-			$this->card = $cardId;
-			$this->active = 0;
+			$this->card = new Card($cardId);
+			$this->count = 1;
 			$this->id = DB::zdb()->lastInsertId();
 		}
 	}
@@ -46,20 +46,26 @@ class Entry
 	{
 		DB::zdb()->update(
 			Entry::$TABLE,
-			array("active" => 1),
-			"id = $id"
+			array("count" => ++$this->count),
+			"id = " . $this->id
 		);
-		$this->active = 1;
 	}
 	
-	public function Invalidate()
+	public function Remove()
 	{
-		DB::zdb()->update(
-			Entry::$TABLE,
-			array("active" => 0),
-			"id = $id"
-		);
-		$this->active = 1;
+		if ( $this->count > 0 )
+		{	
+			DB::zdb()->update(
+				Entry::$TABLE,
+				array("count" => --$this->count),
+				"id = " . $this->id
+			);
+		}
+	}
+	
+	public function Card()
+	{
+		return $this->card;
 	}
 }
 

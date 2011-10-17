@@ -13,6 +13,6 @@ $id = $view->ID();
 
 ?>
 <div class="cardOverlay" id="overlay_<?php echo $id; ?>"
-	style="display:none;">
-  overlay
+	style="display:none;position:absolute;bottom:0px;right:0px;width:40px;height:40px;background-color:#518;border-radius:7px;">
+  &nbsp;
 </div>

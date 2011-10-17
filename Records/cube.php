@@ -107,9 +107,26 @@ class Cube
 		{
 			DB::zdb()->beginTransaction();
 			
-			require_once "Records/entry.php";
 			$entry = new Entry($this, $cardId);
 			$entry->Add();
+			
+			DB::zdb()->commit();
+		}
+		catch (Exception $e)
+		{
+			DB::zdb()->rollBack();
+			Log::Failure(print_r($e, true));
+		}
+	}
+	
+	public function RemoveCardFromCube($cardId)
+	{
+		try
+		{
+			DB::zdb()->beginTransaction();
+			
+			$entry = new Entry($this, $cardId);
+			$entry->Remove();
 			
 			DB::zdb()->commit();
 		}
